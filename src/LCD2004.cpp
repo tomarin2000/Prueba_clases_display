@@ -1,20 +1,16 @@
 #include "Control.h"
-#include "LiquidCrystal_I2C.h"
-//#include <WiFi.h>
-//#include <time.h>
+//#include "LiquidCrystal_I2C.h"
+//#include "DisplayLCD.h"
 
 #define B 0x20
 #define FF 0xFF
 #define C 0xA5
 
-#define LCD2004_address 0x27  // direccion bus I2C
+//#define LCD2004_address 0x27  // direccion bus I2C
 
-#define clock_star_line 1  // lineas 0 a 3
-#define clock_star_col  0  // posicion 0 a 19
-#define timer_star_line 2  // lineas 0 a 3
-#define timer_star_col  7  // posicion 0 a 19
-
-LiquidCrystal_I2C lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+//DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+//lcd = new DisplayLCD(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+//LiquidCrystal_I2C lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 
 int msecond, dots;
 
@@ -147,10 +143,10 @@ void infoLCD(const char *textDisplay, int dnum, int btype, int bnum) {
 
 void initLCD() {
 
-  lcd.init();
-  lcd.backlight();
+  //lcd.init();
+  //lcd.backlight();
+  //lcd.clear();
   DefineLargeChar(); // Create the custom characters
-  lcd.clear();
   lcd.setCursor(5, 0);
   lcd.print("Ardomo Aqua");
   lcd.setCursor(0, 2);

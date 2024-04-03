@@ -1,6 +1,9 @@
 #define __MAIN__
 #include "Control.h"
 
+
+  DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+
 /*----------------------------------------------*
  *               Setup inicial                  *
  *----------------------------------------------*/

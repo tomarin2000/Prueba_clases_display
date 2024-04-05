@@ -2,7 +2,6 @@
 #include "Control.h"
 
 
-  DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 
 /*----------------------------------------------*
  *               Setup inicial                  *
@@ -31,7 +30,7 @@ void setup()
   #endif
   display = new Display(DISPCLK,DISPDIO);
   display->clearDisplay();
-  initLCD();
+  //initLCD();
   //Para el Configure le paso (encoder y ?) display porque lo usara.
   #ifdef DEBUG
    Serial.println(F("Inicializando Configure"));
@@ -112,7 +111,7 @@ void StaticTimeUpdate(void)
   if (minutes > MAXMINUTES) minutes = MAXMINUTES;
   display->printTime(minutes, seconds);
   #ifdef displayLCDStaticTimeUpdate
-    if(prevseconds != seconds || prevminutes != minutes) displayTimer(minutes, seconds, 7, 2); //LCD solo se actualiza si cambia
+    //if(prevseconds != seconds || prevminutes != minutes) displayTimer(minutes, seconds, 7, 2); //LCD solo se actualiza si cambia
     prevseconds = seconds;  //LCD
     prevminutes = minutes;  //LCD
   #endif  
@@ -130,9 +129,8 @@ void refreshTime()
   unsigned long curMinutes = 33;
   unsigned long curSeconds = 33;
   display->printTime(curMinutes,curSeconds);
-  //display->printTime(T.ShowMinutes(),T.ShowSeconds());
   #ifdef displayLCDrefreshTime
-    if(prevseconds != curSeconds) displayTimer(curMinutes, curSeconds, 7, 2); //LCD solo se actualiza si cambia
+    //if(prevseconds != curSeconds) displayTimer(curMinutes, curSeconds, 7, 2); //LCD solo se actualiza si cambia
     prevseconds = curSeconds;  //LCD
   #endif  
 
@@ -157,7 +155,7 @@ void infoDisplay(const char *textDisplay, int dnum, int btype, int bnum) {
     display->blink(dnum);
   #endif
   #ifdef displayLCD
-    infoLCD(textDisplay, dnum, btype, bnum);
+    //infoLCD(textDisplay, dnum, btype, bnum);
   #endif
 }
 

@@ -11,7 +11,7 @@
 //DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 //lcd = new DisplayLCD(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 //LiquidCrystal_I2C lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
-
+/*
 int msecond, dots;
 
 unsigned long lastSecond = millis();
@@ -28,6 +28,10 @@ byte cc5[8] = {0x00,0x00,0x00,0x00,0x00,0x1F,0x1F,0x1F};
 byte cc6[8] = {0x1F,0x1F,0x1F,0x1F,0x1F,0x1F,0x1E,0x1C};
 byte cc7[8] = {0x1F,0x1F,0x1F,0x00,0x00,0x00,0x1F,0x1F};
 byte cc8[8] = {0x1F,0x00,0x00,0x00,0x00,0x1F,0x1F,0x1F};
+
+
+DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+
 
 // send custom characters to the display
 
@@ -67,7 +71,7 @@ char bn2[] = {
 
 void printTwoNumber(uint8_t number, uint8_t position, uint8_t line)//13
 {
-  // Print position is hardcoded
+  // Print position is NO hardcoded
   int digit0; // To represent the ones
   int digit1; // To represent the tens
   digit0 = number % 10;
@@ -161,3 +165,4 @@ void displayTimer(uint8_t minute, uint8_t second, uint8_t col, uint8_t line) {
   printTwoNumber(second, col+7, line);
 }
 
+*/

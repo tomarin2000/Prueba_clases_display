@@ -1,6 +1,7 @@
 // Based on the work by DFRobot
 
-#include "LiquidCrystal_I2C.h"
+#include "control.h"
+
 #include <inttypes.h>
 #if defined(ARDUINO) && ARDUINO >= 100
 

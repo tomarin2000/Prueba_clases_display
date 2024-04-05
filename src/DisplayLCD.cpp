@@ -1,10 +1,7 @@
 #include "control.h"
 
 
-//DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : LiquidCrystal_I2C(lcd_Addr, lcd_cols, lcd_rows)
-//DisplayLCD::DisplayLCD(uint8_t lcd1_Addr, uint8_t lcd1_cols, uint8_t lcd1_rows) : lcdDisp(lcd1_Addr, lcd1_cols, lcd1_rows)
-DisplayLCD::DisplayLCD(int x, int y, int z): A1(x, y, z)
-//DisplayLCD::DisplayLCD(uint8_t lcd1_Addr, uint8_t lcd1_cols, uint8_t lcd1_rows)
+DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : lcdDisp(lcd_Addr, lcd_cols, lcd_rows)
 { }
 /*   
   #ifdef EXTRADEBUG

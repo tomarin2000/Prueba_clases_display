@@ -59,7 +59,7 @@ void Display::check(int veces)
       printRaw(t);
       delay(300);
     }
-    print("----");
+    print("OOOO");
   }
 }
 

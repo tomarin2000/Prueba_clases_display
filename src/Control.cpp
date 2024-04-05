@@ -30,7 +30,9 @@ void setup()
   #endif
   display = new Display(DISPCLK,DISPDIO);
   display->clearDisplay();
-  initLCD();
+  DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+  lcd.initLCD();
+  lcd.check(3);
   //Para el Configure le paso (encoder y ?) display porque lo usara.
   #ifdef DEBUG
    Serial.println(F("Inicializando Configure"));
@@ -77,6 +79,7 @@ void check(void)
     Serial.println(F("TRACE: in display check"));
     #endif
   display->check(1);
+  display->print("----");
 }
 
 

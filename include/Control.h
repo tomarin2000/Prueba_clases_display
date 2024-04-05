@@ -5,20 +5,15 @@
    #define _GNU_SOURCE // evitar error uint no definido en platformio (no en compilacion) tras update a espressif8266 3.2.0
   #endif               // ver: https://community.platformio.org/t/error-acessing-eeprom-of-esp8266-after-plattform-update/22747/2
   
-    #include <Arduino.h>
-    #include<iostream>
   //Para mis clases
   #include "Display.h"
   #include "Configure.h"
   #include "LiquidCrystal_I2C.h"
-  #include "A1.h"
   #include "DisplayLCD.h"
 
   #define LCD2004_address 0x27  // direccion bus I2C
   
   #include <Wire.h>
-
-  using namespace std;
 
 
   #ifdef DEVELOP
@@ -441,6 +436,7 @@
     Config_parm config; //estructura parametros configurables y runtime
     Display      *display;
     Configure    *configure;
+    //DisplayLCD *lcd;
     time_t utc;
     time_t lastRiegos[NUMZONAS];
     uint factorRiegos[NUMZONAS];

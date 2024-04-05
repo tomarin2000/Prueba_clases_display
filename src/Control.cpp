@@ -30,19 +30,15 @@ void setup()
   #endif
   display = new Display(DISPCLK,DISPDIO);
   display->clearDisplay();
-  //initLCD();
+  initLCD();
   //Para el Configure le paso (encoder y ?) display porque lo usara.
   #ifdef DEBUG
    Serial.println(F("Inicializando Configure"));
   #endif
   configure = new Configure(display);
-
-
   
   check();          //Chequeo de display
   refreshTime();
-
-
 
   #ifdef TRACE
     Serial.println(F("TRACE: ending setup"));

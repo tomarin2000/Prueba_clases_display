@@ -2,8 +2,9 @@
 
 
 DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : lcdDisp(lcd_Addr, lcd_cols, lcd_rows)
-{ }
-/*   
+{ 
+  Serial.printf( "soy el Constructor of the base class DisplayLCD numeros pasados: %d %d %d\n", lcd_Addr , lcd_cols , lcd_rows );
+   
   #ifdef EXTRADEBUG
    Serial.println(F("DISPLAYLCD: constructor"));
   #endif
@@ -29,7 +30,7 @@ void DisplayLCD::clear()
   lcdDisp.clear();
 }
 
-void DisplayLCD::check(int veces)
+/* void DisplayLCD::check(int veces)
 {
   uint8_t t[5];
   t[4]=0;
@@ -39,5 +40,4 @@ void DisplayLCD::check(int veces)
     }
     print("----");
 }
- */  
-
+ */

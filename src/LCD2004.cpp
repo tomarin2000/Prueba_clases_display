@@ -6,12 +6,12 @@
 #define FF 0xFF
 #define C 0xA5
 
-//#define LCD2004_address 0x27  // direccion bus I2C
+#define LCD2004_address 0x27  // direccion bus I2C
 
-//DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 //lcd = new DisplayLCD(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 //LiquidCrystal_I2C lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
-/*
+
 int msecond, dots;
 
 unsigned long lastSecond = millis();
@@ -30,35 +30,33 @@ byte cc7[8] = {0x1F,0x1F,0x1F,0x00,0x00,0x00,0x1F,0x1F};
 byte cc8[8] = {0x1F,0x00,0x00,0x00,0x00,0x1F,0x1F,0x1F};
 
 
-DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
-
-
 // send custom characters to the display
-
-void displayWiFi() {
-  
-  lcd.clear();
-  lcd.print("Connecting to wifi");
-  lcd.setCursor(0, 1);
-  //lcd.print(ssid);
-  delay(1000);
-  lcd.clear();
-  lcd.print("CONNECTED");
-  delay(2000);
-  }
-
 
 
 void DefineLargeChar() {
-    lcd.createChar(1, cc1);
-    lcd.createChar(2, cc2);
-    lcd.createChar(3, cc3);
-    lcd.createChar(4, cc4);
-    lcd.createChar(5, cc5);
-    lcd.createChar(6, cc6);
-    lcd.createChar(7, cc7);
-    lcd.createChar(8, cc8);
-}
+    lcd.lcdDisp.createChar(1, cc1);
+    lcd.lcdDisp.createChar(2, cc2);
+    lcd.lcdDisp.createChar(3, cc3);
+    lcd.lcdDisp.createChar(4, cc4);
+    lcd.lcdDisp.createChar(5, cc5);
+    lcd.lcdDisp.createChar(6, cc6);
+    lcd.lcdDisp.createChar(7, cc7);
+    lcd.lcdDisp.createChar(8, cc8);
+    }
+
+
+void displayWiFi() {
+  
+  lcd.lcdDisp.clear();
+  lcd.lcdDisp.print("Connecting to wifi");
+  lcd.lcdDisp.setCursor(0, 1);
+  //lcd.lcdDisp.print(ssid);
+  delay(1000);
+  lcd.lcdDisp.clear();
+  lcd.lcdDisp.print("CONNECTED");
+  delay(2000);
+  }
+
 
 // 0 1 2 3 4 5 6 7 8 9
 char bn1[] = {
@@ -78,42 +76,42 @@ void printTwoNumber(uint8_t number, uint8_t position, uint8_t line)//13
   digit1 = number / 10;
 
   // Line 1 of the two-digit number
-  //lcd.setCursor(position, 0);
-  lcd.setCursor(position, line);  //linea superior 1 = segunda linea
-  lcd.write(bn1[digit1 * 3]);
-  lcd.write(bn1[digit1 * 3 + 1]);
-  lcd.write(bn1[digit1 * 3 + 2]);
-  //lcd.write(B); // Blank
-  lcd.write(bn1[digit0 * 3]);
-  lcd.write(bn1[digit0 * 3 + 1]);
-  lcd.write(bn1[digit0 * 3 + 2]);
+  //lcd.lcdDisp.setCursor(position, 0);
+  lcd.lcdDisp.setCursor(position, line);  //linea superior 1 = segunda linea
+  lcd.lcdDisp.write(bn1[digit1 * 3]);
+  lcd.lcdDisp.write(bn1[digit1 * 3 + 1]);
+  lcd.lcdDisp.write(bn1[digit1 * 3 + 2]);
+  //lcd.lcdDisp.write(B); // Blank
+  lcd.lcdDisp.write(bn1[digit0 * 3]);
+  lcd.lcdDisp.write(bn1[digit0 * 3 + 1]);
+  lcd.lcdDisp.write(bn1[digit0 * 3 + 2]);
 
   // Line 2 of the two-digit number
-  //lcd.setCursor(position, 1);
-  lcd.setCursor(position, line+1);  //linea inferior 2 = tercera linea
-  lcd.write(bn2[digit1 * 3]);
-  lcd.write(bn2[digit1 * 3 + 1]);
-  lcd.write(bn2[digit1 * 3 + 2]);
-  //lcd.write(B); // Blank
-  lcd.write(bn2[digit0 * 3]);
-  lcd.write(bn2[digit0 * 3 + 1]);
-  lcd.write(bn2[digit0 * 3 + 2]);
+  //lcd.lcdDisp.setCursor(position, 1);
+  lcd.lcdDisp.setCursor(position, line+1);  //linea inferior 2 = tercera linea
+  lcd.lcdDisp.write(bn2[digit1 * 3]);
+  lcd.lcdDisp.write(bn2[digit1 * 3 + 1]);
+  lcd.lcdDisp.write(bn2[digit1 * 3 + 2]);
+  //lcd.lcdDisp.write(B); // Blank
+  lcd.lcdDisp.write(bn2[digit0 * 3]);
+  lcd.lcdDisp.write(bn2[digit0 * 3 + 1]);
+  lcd.lcdDisp.write(bn2[digit0 * 3 + 2]);
 }
 
 void printColons(uint8_t position, uint8_t line)
 {
-  lcd.setCursor(position, line);
-  lcd.write (C);
-  lcd.setCursor(position, line+1);
-  lcd.write (C);
+  lcd.lcdDisp.setCursor(position, line);
+  lcd.lcdDisp.write (C);
+  lcd.lcdDisp.setCursor(position, line+1);
+  lcd.lcdDisp.write (C);
 }
 
 void printNoColons(uint8_t position, uint8_t line)
 {
-  lcd.setCursor(position, line);
-  lcd.write (B);
-  lcd.setCursor(position, line+1);
-  lcd.write (B);
+  lcd.lcdDisp.setCursor(position, line);
+  lcd.lcdDisp.write (B);
+  lcd.lcdDisp.setCursor(position, line+1);
+  lcd.lcdDisp.write (B);
 }
 
 void updateData() {
@@ -123,41 +121,40 @@ void updateData() {
 void blinkLCD(const char *textDisplay,int veces)
 {
     for (int i=0; i<veces; i++) {
-      lcd.clear();
+      lcd.lcdDisp.clear();
       delay(500);
-      lcd.setCursor(7, 0);
-      lcd.print(textDisplay);
+      lcd.lcdDisp.setCursor(7, 0);
+      lcd.lcdDisp.print(textDisplay);
       delay(500);
     }
 }
 
 void infoLCD(const char *textDisplay, int dnum, int btype, int bnum) {
     Serial.print(F("[infoLCD] Recibido: "));Serial.println(textDisplay);
-    lcd.clear();
-    lcd.setCursor(7, 0);
-    lcd.print(textDisplay);
+    lcd.lcdDisp.clear();
+    lcd.lcdDisp.setCursor(7, 0);
+    lcd.lcdDisp.print(textDisplay);
     for (int i=0; i<dnum; i++) {
-      lcd.clear();
+      lcd.lcdDisp.clear();
       delay(500);
-      lcd.setCursor(7, 0);
-      lcd.print(textDisplay);
+      lcd.lcdDisp.setCursor(7, 0);
+      lcd.lcdDisp.print(textDisplay);
       delay(500);
     }
 }
 
 void initLCD() {
 
-  //lcd.init();
-  //lcd.backlight();
-  //lcd.clear();
+  //lcd.lcdDisp.init();
+  //lcd.lcdDisp.backlight();
+  //lcd.lcdDisp.clear();
   DefineLargeChar(); // Create the custom characters
-  lcd.setCursor(5, 0);
-  lcd.print("Ardomo Aqua");
-  lcd.setCursor(0, 2);
-  lcd.print("Inicializando");
+  lcd.lcdDisp.setCursor(5, 0);
+  lcd.lcdDisp.print("Ardomo Aqua");
+  lcd.lcdDisp.setCursor(0, 2);
+  lcd.lcdDisp.print("Inicializando");
   //delay(1000);
 }
-
 
 void displayTimer(uint8_t minute, uint8_t second, uint8_t col, uint8_t line) {
   printTwoNumber(minute, col, line);
@@ -165,4 +162,3 @@ void displayTimer(uint8_t minute, uint8_t second, uint8_t col, uint8_t line) {
   printTwoNumber(second, col+7, line);
 }
 
-*/

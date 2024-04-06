@@ -7,25 +7,29 @@
   {
    private:
       LiquidCrystal_I2C lcdDisp;
+      bool _displayOff;
+      unsigned long _lastBlinkPause;
+      void DefineLargeChar(void);
+      void printTwoNumber(uint8_t , uint8_t , uint8_t );
+      void printColons(uint8_t , uint8_t);
+      void printNoColons(uint8_t , uint8_t);
 
    public:
       DisplayLCD(uint8_t lcd1_Addr,uint8_t lcd1_cols,uint8_t lcd1_rows);
       // funciones (metodos) para display LCD
+      void initLCD(void);
+      void blinkLCD(const char *,int);
+      void blinkLCD(int);
       void clear(void);
       void check(int);
-      void initLCD(void);
-      void print(void);
+      void print(const char *);
+      void print(int);
       void setCursor(uint8_t, uint8_t);
-      void DefineLargeChar(void);
+      void setBacklight(bool);				// alias for backlight() and nobacklight()
       void backlight(void);
       void nobacklight(void);
-      void setBacklight(bool);				// alias for backlight() and nobacklight()
-      void printTwoNumber(uint8_t , uint8_t , uint8_t );
-      void printColons(uint8_t , uint8_t);
-      void printNoColons(uint8_t , uint8_t);
-      void displayTimer(uint8_t , uint8_t , uint8_t , uint8_t );
+      void displayTime(uint8_t minute, uint8_t second, uint8_t col, uint8_t line);
       void displayWiFi(void);
-      void blinkLCD(const char *,int );
       void infoLCD(const char *, int , int , int );
   };
 

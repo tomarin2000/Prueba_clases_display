@@ -30,7 +30,7 @@ void setup()
   #endif
   display = new Display(DISPCLK,DISPDIO);
   display->clearDisplay();
-  DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+  //DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
   lcd.initLCD();
   lcd.check(3);
   //Para el Configure le paso (encoder y ?) display porque lo usara.
@@ -41,6 +41,10 @@ void setup()
   
   check();          //Chequeo de display
   refreshTime();
+
+  lcd.clear();
+  lcd.setCursor(3,1);
+  lcd.print("HOOOOOOOLAAAAA");
 
   #ifdef TRACE
     Serial.println(F("TRACE: ending setup"));
@@ -54,7 +58,7 @@ void setup()
 
 void loop()
 {
-
+lcd.blinkLCD(0);
 
 }
 

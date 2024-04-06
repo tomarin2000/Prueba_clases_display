@@ -436,7 +436,6 @@
     Config_parm config; //estructura parametros configurables y runtime
     Display      *display;
     Configure    *configure;
-    //DisplayLCD *lcd;
     time_t utc;
     time_t lastRiegos[NUMZONAS];
     uint factorRiegos[NUMZONAS];
@@ -468,6 +467,8 @@
     bool encoderSW = false;
     char errorText[7];
     //bool clean_FS = false;
+
+  DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 
 
   #endif

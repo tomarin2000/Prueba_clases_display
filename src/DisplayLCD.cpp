@@ -27,7 +27,7 @@ char bn2[] = {
 //-----------------------  FIN DEFINICIONES PARA CARACTERES GRANDES  (2X3)    ------------------------------------------
 
 
-DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+//DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 
 
 DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : lcdDisp(lcd_Addr, lcd_cols, lcd_rows)
@@ -36,13 +36,24 @@ DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : lcd
   #ifdef EXTRADEBUG
    Serial.printf( "soy el Constructor de DisplayLCD numeros pasados: 0x%x %d %d\n", lcd_Addr , lcd_cols , lcd_rows );
   #endif
-  lcdDisp.init();
-  lcdDisp.clear();
-  lcdDisp.backlight();
-  #ifdef EXTRADEBUG
-   Serial.println(F("DISPLAYLCD: exit constructor"));
-  #endif
 }  
+
+
+void DisplayLCD::initLCD() {
+  #ifdef TRACE
+   Serial.println(F("[TRACE] DISPLAYLCD: initLCD"));
+  #endif
+  lcdDisp.init();
+  clear();
+  backlight();
+
+  DefineLargeChar(); // Create the custom characters
+
+  setCursor(5, 0);
+  print("Ardomo Aqua");
+  setCursor(0, 2);
+  print("Inicializando");
+}
 
 void DisplayLCD::clear()
 {
@@ -69,23 +80,18 @@ void DisplayLCD::setBacklight(bool value)				// alias for backlight() and noback
   lcdDisp.setBacklight(value);
 }
 
-void DisplayLCD::initLCD() {
-  DefineLargeChar(); // Create the custom characters
-  setCursor(5, 0);
-  lcdDisp.print("Ardomo Aqua");
-  setCursor(0, 2);
-  lcdDisp.print("Inicializando");
+void DisplayLCD::print(const char * text) {
+  lcdDisp.print(text);
 }
-
 
 void DisplayLCD::check(int veces)
 {
   for(int repeat=0;repeat<veces;repeat++)
   {
     setBacklight(OFF);
-    delay(500);
+    delay(DEFAULTBLINKMILLIS);
     setBacklight(ON);
-    delay(500);
+    delay(DEFAULTBLINKMILLIS);
   }
   clear();
   lcdDisp.print("----");
@@ -105,8 +111,7 @@ void DisplayLCD::displayWiFi() {
   }
 
 
-
-void DisplayLCD::blinkLCD(const char *textDisplay,int veces)
+void DisplayLCD::blinkLCD(const char *textDisplay,int veces) //muestra texto recibido parpadeando n veces
 {
     for (int i=0; i<veces; i++) {
       clear();
@@ -115,6 +120,36 @@ void DisplayLCD::blinkLCD(const char *textDisplay,int veces)
       lcdDisp.print(textDisplay);
       delay(500);
     }
+}
+
+void DisplayLCD::blinkLCD(int veces) //parpadea contenido actual de la pantalla n veces
+{
+  if(veces) {                       
+    // parpadea pantalla n veces
+      for (int i=0; i<veces; i++) {
+        lcdDisp.noDisplay(); // setBacklight(OFF);
+        delay(DEFAULTBLINKMILLIS);
+        lcdDisp.display(); // setBacklight(ON);
+        delay(DEFAULTBLINKMILLIS);
+      }
+  }
+  else {
+    // conmuta on/off pantalla si ha pasado tiempo DEFAULTBLINKMILLIS                            
+      if (!_displayOff) {
+        if (millis() > _lastBlinkPause + DEFAULTBLINKMILLIS) {
+          lcdDisp.noDisplay();
+          _displayOff = true;
+          _lastBlinkPause = millis();
+        }
+      }
+      else {
+        if (millis() > _lastBlinkPause + DEFAULTBLINKMILLIS) {
+          lcdDisp.display();
+          _displayOff = false;
+          _lastBlinkPause = millis();
+        }
+      }
+  }
 }
 
 void DisplayLCD::infoLCD(const char *textDisplay, int dnum, int btype, int bnum) {
@@ -132,7 +167,7 @@ void DisplayLCD::infoLCD(const char *textDisplay, int dnum, int btype, int bnum)
 }
 
 
-void DisplayLCD::displayTimer(uint8_t minute, uint8_t second, uint8_t col, uint8_t line) 
+void DisplayLCD::displayTime(uint8_t minute, uint8_t second, uint8_t col, uint8_t line) 
 {
   printTwoNumber(minute, col, line);
   printColons(col+6, line);

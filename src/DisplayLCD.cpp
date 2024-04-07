@@ -167,6 +167,11 @@ void DisplayLCD::infoLCD(const char *textDisplay, int dnum, int btype, int bnum)
 }
 
 
+void DisplayLCD::displayTime(uint8_t minute, uint8_t second)
+{
+   displayTime(minute, second, LCDBIGCOL, LCDBIGROW);
+}
+
 void DisplayLCD::displayTime(uint8_t minute, uint8_t second, uint8_t col, uint8_t line) 
 {
   printTwoNumber(minute, col, line);

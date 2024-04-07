@@ -30,7 +30,6 @@ void setup()
   #endif
   display = new Display(DISPCLK,DISPDIO);
   display->clearDisplay();
-  //DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
   lcd.initLCD();
   lcd.check(3);
   //Para el Configure le paso (encoder y ?) display porque lo usara.
@@ -38,14 +37,22 @@ void setup()
    Serial.println(F("Inicializando Configure"));
   #endif
   configure = new Configure(display);
-  
   check();          //Chequeo de display
   refreshTime();
 
+/*   
   lcd.clear();
-  lcd.setCursor(3,1);
-  lcd.print("HOOOOOOOLAAAAA");
-
+  lcd.setCursor(0,0);
+  lcd.print("linea 1 ");
+  lcd.setCursor(0,1);
+  lcd.print("linea 2 ");
+  lcd.setCursor(0,2);
+  lcd.print("linea 3 ");
+  lcd.setCursor(0,3);
+  lcd.print("linea 4 ");
+  lcd.setCursor(0,4);
+  lcd.print("linea 5 ");
+ */
   #ifdef TRACE
     Serial.println(F("TRACE: ending setup"));
   #endif
@@ -58,7 +65,7 @@ void setup()
 
 void loop()
 {
-lcd.blinkLCD(0);
+//lcd.blinkLCD(0);
 
 }
 
@@ -133,7 +140,7 @@ void refreshTime()
   unsigned long curSeconds = 33;
   display->printTime(curMinutes,curSeconds);
   #ifdef displayLCDrefreshTime
-    //if(prevseconds != curSeconds) displayTimer(curMinutes, curSeconds, 7, 2); //LCD solo se actualiza si cambia
+    if(prevseconds != curSeconds) lcd.displayTime(curMinutes, curSeconds); //LCD solo se actualiza si cambia
     prevseconds = curSeconds;  //LCD
   #endif  
 

@@ -12,6 +12,8 @@
   #include "DisplayLCD.h"
 
   #define LCD2004_address 0x27  // direccion bus I2C
+  #define LCDBIGROW 2           // linea por defecto para timer en numeros grandes
+  #define LCDBIGCOL 7           // columna por defecto para timer en numeros grandes
   
   #include <Wire.h>
 
@@ -405,6 +407,8 @@
     unsigned long lastMillisLoop = 0;
     int numloops = 0;
 
+    DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+
   #else
     extern S_BOTON Boton [];
     extern S_MULTI multi;
@@ -424,6 +428,7 @@
     extern long lastMillisLoop;
     extern int numloops;
 
+    extern  DisplayLCD lcd;
 
   #endif
 
@@ -468,7 +473,7 @@
     char errorText[7];
     //bool clean_FS = false;
 
-  DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+  //DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
 
 
   #endif
@@ -488,7 +493,7 @@
   bool copyConfigFile(const char*, const char*);
   void dimmerLeds(bool);
   void displayGrupo(uint16_t *, int);
-  void displayTimer(uint8_t, uint8_t, uint8_t, uint8_t);
+  //void displayTimer(uint8_t, uint8_t, uint8_t, uint8_t);
   bool domoticzSwitch(int,char *, int);
   void enciendeLeds(void);
   void endWS(void);

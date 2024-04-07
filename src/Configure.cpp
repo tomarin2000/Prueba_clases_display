@@ -7,6 +7,8 @@ Configure::Configure(class Display *disp)
   _configuringTime = false;
   _configuringMulti = false;
   display = disp;
+  lcd.clear();
+  lcd.print("Hola desde el Configure");
 }
 
 void Configure::start()
@@ -16,6 +18,7 @@ void Configure::start()
   _configuringTime = false;
   _configuringMulti = false;
   display->print("ConF");
+  lcd.print("Modo Configuracion");
 }
 
 void Configure::stop()

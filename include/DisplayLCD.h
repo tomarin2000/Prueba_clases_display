@@ -28,6 +28,7 @@
       void setBacklight(bool);				// alias for backlight() and nobacklight()
       void backlight(void);
       void nobacklight(void);
+      void displayTime(uint8_t minute, uint8_t second);
       void displayTime(uint8_t minute, uint8_t second, uint8_t col, uint8_t line);
       void displayWiFi(void);
       void infoLCD(const char *, int , int , int );

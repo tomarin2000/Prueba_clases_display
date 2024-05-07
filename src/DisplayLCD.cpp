@@ -1,5 +1,7 @@
 #include "control.h"
 
+
+
 //-----------------------  DEFINICIONES PARA CARACTERES GRANDES  (2X3)    ----------------------------------------------
 
 #define B 0x20
@@ -27,12 +29,9 @@ char bn2[] = {
 //-----------------------  FIN DEFINICIONES PARA CARACTERES GRANDES  (2X3)    ------------------------------------------
 
 
-//DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
-
 
 DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : lcdDisp(lcd_Addr, lcd_cols, lcd_rows)
 { 
-   
   #ifdef EXTRADEBUG
    Serial.printf( "soy el Constructor de DisplayLCD numeros pasados: 0x%x %d %d\n", lcd_Addr , lcd_cols , lcd_rows );
   #endif
@@ -40,9 +39,7 @@ DisplayLCD::DisplayLCD(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows) : lcd
 
 
 void DisplayLCD::initLCD() {
-  #ifdef TRACE
-   Serial.println(F("[TRACE] DISPLAYLCD: initLCD"));
-  #endif
+  LOG_TRACE("");
   lcdDisp.init();
   clear();
   backlight();
@@ -51,17 +48,19 @@ void DisplayLCD::initLCD() {
 
   setCursor(5, 0);
   print("Ardomo Aqua");
-  setCursor(0, 2);
+  setCursor(3, 2);
   print("Inicializando");
 }
 
 void DisplayLCD::clear()
 {
+  LOG_TRACE("");
   lcdDisp.clear();
 }
 
 void DisplayLCD::setCursor(uint8_t col, uint8_t row)
 {
+  LOG_DEBUG("COLUMNA: ", col, "FILA:" ,row);
   lcdDisp.setCursor(col, row);
 }
 
@@ -75,6 +74,16 @@ void DisplayLCD::nobacklight()
   lcdDisp.noBacklight();
 }
 
+void DisplayLCD::display()
+{
+  lcdDisp.display();
+}
+
+void DisplayLCD::noDisplay()
+{
+  lcdDisp.noDisplay();
+}
+
 void DisplayLCD::setBacklight(bool value)				// alias for backlight() and nobacklight()
 {
   lcdDisp.setBacklight(value);
@@ -84,31 +93,11 @@ void DisplayLCD::print(const char * text) {
   lcdDisp.print(text);
 }
 
-void DisplayLCD::check(int veces)
+void DisplayLCD::check()
 {
-  for(int repeat=0;repeat<veces;repeat++)
-  {
-    setBacklight(OFF);
-    delay(DEFAULTBLINKMILLIS);
-    setBacklight(ON);
-    delay(DEFAULTBLINKMILLIS);
-  }
   clear();
   lcdDisp.print("----");
 }
-
-
-void DisplayLCD::displayWiFi() {
-  
-  clear();
-  lcdDisp.print("Connecting to wifi");
-  setCursor(0, 1);
-  //lcdDisp.print(ssid);
-  delay(1000);
-  clear();
-  lcdDisp.print("CONNECTED");
-  delay(2000);
-  }
 
 
 void DisplayLCD::blinkLCD(const char *textDisplay,int veces) //muestra texto recibido parpadeando n veces
@@ -133,37 +122,93 @@ void DisplayLCD::blinkLCD(int veces) //parpadea contenido actual de la pantalla 
         delay(DEFAULTBLINKMILLIS);
       }
   }
-  else {
-    // conmuta on/off pantalla si ha pasado tiempo DEFAULTBLINKMILLIS                            
-      if (!_displayOff) {
-        if (millis() > _lastBlinkPause + DEFAULTBLINKMILLIS) {
-          lcdDisp.noDisplay();
-          _displayOff = true;
-          _lastBlinkPause = millis();
-        }
-      }
-      else {
-        if (millis() > _lastBlinkPause + DEFAULTBLINKMILLIS) {
-          lcdDisp.display();
-          _displayOff = false;
-          _lastBlinkPause = millis();
-        }
-      }
-  }
 }
 
-void DisplayLCD::infoLCD(const char *textDisplay, int dnum, int btype, int bnum) {
-    Serial.print(F("[infoLCD] Recibido: "));Serial.println(textDisplay);
+void DisplayLCD::infoEstado(const char *estado) {
+    LOG_TRACE("");
+    infoEstadoI(estado, "");
+}    
+
+void DisplayLCD::infoEstado(const char *estado,  const char *zona) {
+    LOG_TRACE("");
+    infoEstadoI(estado, zona);
+}    
+
+void DisplayLCD::infoEstadoI(const char *estado, const char *zona) {
+    LOG_DEBUG("[infoEstado] Recibido: ", estado, "ZONA: ", zona);
+    lcdDisp.display();   // por si estuviera noDisplay por PAUSE
+    setCursor(0, 0);
+    lcdDisp.print(_blankline);
+    setCursor(0, 0);
+    lcdDisp.print(estado);
+    setCursor(11, 0);
+    lcdDisp.print(zona);
+}    
+
+void DisplayLCD::infoEstado2(const char* info2, int size) {
+    LOG_DEBUG("[infoEstado2] Recibido: %s longitud: %d \n", info2, size);
+    setCursor(0, 1);
+    lcdDisp.print(_blankline);
+    setCursor(0, 1);
+    lcdDisp.print(verify(info2, size));
+}    
+
+void DisplayLCD::infoEstado2(const char* info2) {
+    LOG_DEBUG("[infoEstado2] Recibido: %s \n", info2);
+    //clear();
+    setCursor(0, 1);
+    lcdDisp.print(_blankline);
+    setCursor(0, 1);
+    lcdDisp.print(info2);
+}    
+
+void DisplayLCD::infoEstado2(const char* grupo, const char* info) {
+    LOG_DEBUG("[infoEstado2] Recibido: %s \n", grupo);
+    //clear();
+    setCursor(0, 1);
+    lcdDisp.print(_blankline);
+    setCursor(0, 1);
+    lcdDisp.print(grupo);
+}    
+
+// muestra info (hasta un maximo de 20 caracteres) en la linea pasada (1, 2 ,3 o 4)
+void DisplayLCD::info20(char* info, int line) {
+    int size = strlen(info) - 1;
+    Serial.printf("[infoEstado 20] Recibido: %s de longitud: %d  \n", info, size);
+    if(size>LCDMAXLEN) info[20] = 0x0; 
+    info20(info, line, size);
+}    
+
+// muestra info (seran ya un maximo de 20 caracteres) en la linea pasada (1, 2 ,3 o 4)
+void DisplayLCD::info20(const char* info, int line, int size) {
+    Serial.printf("[infoEstado 20] Recibido: %s longitud: %d linea: %d \n", info, size, line);
+    setCursor(0, line-1);
+    lcdDisp.print(_blankline);
+    setCursor(0, line-1);
+    lcdDisp.print(info);
+    //lcdDisp.print(verify(info, size));
+}    
+
+
+void DisplayLCD::info(const char *textDisplay) {
+    Serial.print(F("[LCD.info] Recibido: "));Serial.println(textDisplay);
     clear();
-    setCursor(7, 0);
+    setCursor(0, 0);
     lcdDisp.print(textDisplay);
-    for (int i=0; i<dnum; i++) {
-      clear();
-      delay(500);
-      setCursor(7, 0);
-      lcdDisp.print(textDisplay);
-      delay(500);
-    }
+}
+
+void DisplayLCD::info(const char *textDisplay, int dnum, int btype, int bnum) {
+    Serial.printf("[LCD.info] Recibido: %s blink=%d \n", textDisplay, dnum);
+    clear();
+    setCursor(0, 0);
+    lcdDisp.print(textDisplay);
+    #ifndef displayLED
+      if (btype == LONGBIP) longbip(bnum);
+      if (btype == BIP) bip(bnum);
+      if (btype == BIPOK) bipOK();
+      if (btype == BIPKO) bipKO();
+    #endif
+    if(dnum) lcd.blinkLCD(dnum);
 }
 
 
@@ -240,3 +285,8 @@ void DisplayLCD::printNoColons(uint8_t position, uint8_t line)
   lcdDisp.write (B);
 }
 
+const char* DisplayLCD::verify(const char* info2, int msgl)
+{
+  if (msgl > 0 && msgl < MAXBUFF) return info2;
+  else return "msg muy largo";
+}

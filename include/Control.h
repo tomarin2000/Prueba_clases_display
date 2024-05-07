@@ -1,35 +1,30 @@
 #ifndef control_h
   #define control_h
-  
-  #ifndef _GNU_SOURCE  // LOCAL WORK-AROUND
-   #define _GNU_SOURCE // evitar error uint no definido en platformio (no en compilacion) tras update a espressif8266 3.2.0
-  #endif               // ver: https://community.platformio.org/t/error-acessing-eeprom-of-esp8266-after-plattform-update/22747/2
-  
-  //Para mis clases
-  #include "Display.h"
-  #include "Configure.h"
-  #include "LiquidCrystal_I2C.h"
-  #include "DisplayLCD.h"
 
-  #define LCD2004_address 0x27  // direccion bus I2C
-  #define LCDBIGROW 2           // linea por defecto para timer en numeros grandes
-  #define LCDBIGCOL 7           // columna por defecto para timer en numeros grandes
-  
-  #include <Wire.h>
+  //#define ARDUINOTRACE_ENABLE 1
+  //#include <ArduinoTrace.h>
 
-
+  // Uncommenting DEBUGLOG_DISABLE_LOG disables ASSERT and all log (Release Mode)
+  // PRINT and PRINTLN are always valid even in Release Mode
+  // #define DEBUGLOG_DISABLE_LOG
+  // para cambiarlo posteriormente: LOG_SET_LEVEL(DebugLogLevel::LVL_TRACE);
+  // 0: NONE, 1: ERROR, 2: WARN, 3: INFO, 4: DEBUG, 5: TRACE
   #ifdef DEVELOP
     //Comportamiento general para PRUEBAS . DESCOMENTAR LO QUE CORRESPONDA
+    #define DEBUGLOG_DEFAULT_LOG_LEVEL_TRACE
+    //#define DEBUGLOG_DEFAULT_LOG_LEVEL_INFO
     #define DEBUG
     //#define EXTRADEBUG
     #define EXTRADEBUG1
-    #define TRACE
+    //#define TRACE
     //#define EXTRATRACE
     #define VERBOSE
   #endif
 
   #ifdef RELEASE
     //Comportamiento general para uso normal . DESCOMENTAR LO QUE CORRESPONDA
+    //#define DEBUGLOG_DISABLE_LOG
+    #define DEBUGLOG_DEFAULT_LOG_LEVEL_INFO
     //#define DEBUG
     //#define EXTRADEBUG
     //#define TRACE
@@ -39,12 +34,21 @@
 
   #ifdef DEMO
     //Comportamiento general para DEMO . DESCOMENTAR LO QUE CORRESPONDA
-    #define DEBUG
-    //#define EXTRADEBUG
-    //#define TRACE
-    //#define EXTRATRACE
-    #define VERBOSE
+    #define DEBUGLOG_DISABLE_LOG
   #endif
+  #include <DebugLog.h>
+
+  //Para mis clases
+  #include "Display.h"
+  #include "Configure.h"
+  #include "LiquidCrystal_I2C.h"
+  #include "DisplayLCD.h"
+
+  #define LCD2004_address 0x27  // direccion bus I2C
+  
+  #include <Wire.h>
+
+
 
   #ifdef DEVELOP
     #define HOSTNAME "ardomot"
@@ -65,7 +69,7 @@
        
 
   //-------------------------------------------------------------------------------------
-                            #define VERSION  "3.0b.1"
+                            #define VERSION  "1.0"
   //-------------------------------------------------------------------------------------
 
   #define xNAME true //actualiza desc de botones con el Name del dispositivo que devuelve Domoticz
@@ -408,6 +412,7 @@
     int numloops = 0;
 
     DisplayLCD lcd(LCD2004_address, 20, 4);  // 20 caracteres x 4 lineas
+    char buff[MAXBUFF];
 
   #else
     extern S_BOTON Boton [];
@@ -429,6 +434,7 @@
     extern int numloops;
 
     extern  DisplayLCD lcd;
+    extern  char buff[];
 
   #endif
 

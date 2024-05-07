@@ -1,7 +1,7 @@
 #define __MAIN__
 #include "Control.h"
 
-
+//ARDUINOTRACE_INIT(115200);
 
 /*----------------------------------------------*
  *               Setup inicial                  *
@@ -22,40 +22,28 @@ void setup()
   #endif
 
   Serial.begin(115200);
-  Serial.println("\n\n PRUEBAS CLASES" + String(VERSION) + "    Built on " __DATE__ " at " __TIME__ );
+  delay(500);
+  PRINTLN("\n\n PRUEBAS CLASES" + String(VERSION) + "    Built on " __DATE__ " at " __TIME__ );
+  PRINTLN("   current log level is", (int)LOG_GET_LEVEL());
   initWire();
   //Para el display
-  #ifdef DEBUG
-   Serial.println(F("Inicializando displays"));
-  #endif
+  LOG_DEBUG("Inicializando displays");
   display = new Display(DISPCLK,DISPDIO);
   display->clearDisplay();
   lcd.initLCD();
-  lcd.check(3);
+  lcd.check();
   //Para el Configure le paso (encoder y ?) display porque lo usara.
-  #ifdef DEBUG
-   Serial.println(F("Inicializando Configure"));
-  #endif
+  LOG_DEBUG("Inicializando Configure");
   configure = new Configure(display);
-  check();          //Chequeo de display
+  //check();          //Chequeo de display
   refreshTime();
 
-/*   
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("linea 1 ");
-  lcd.setCursor(0,1);
-  lcd.print("linea 2 ");
-  lcd.setCursor(0,2);
-  lcd.print("linea 3 ");
+  lcd.infoEstado("linea 1 ");
+  lcd.infoEstado2("linea 2 ");
   lcd.setCursor(0,3);
   lcd.print("linea 4 ");
-  lcd.setCursor(0,4);
-  lcd.print("linea 5 ");
- */
-  #ifdef TRACE
-    Serial.println(F("TRACE: ending setup"));
-  #endif
+  LOG_INFO("*** ending setup");
 }
 
 
@@ -86,9 +74,6 @@ void initWire() {
 void check(void)
 {
   display->print("----");
-    #ifdef TRACE
-    Serial.println(F("TRACE: in display check"));
-    #endif
   display->check(1);
   display->print("----");
 }
